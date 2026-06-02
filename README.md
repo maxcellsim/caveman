@@ -1,37 +1,44 @@
-# Project Caveman 1.0: The 16.3TB Cognitive Fortress
+# Project Caveman 1.0: The Sovereign Super-Node
+**Status:** Hardware-Design & Theoretical Architecture Phase  
+**Objective:** 128-Node Distributed Matrix (16.3 TB VRAM) via PCIe Gen5 NTB Fabric.
 
-> **"Intelligence belongs to the physical entity; sovereignty belongs to the code itself."**
+## The Caveman Condition
+Standard AI scaling is dead. High-cost HBM3 and InfiniBand locks are the chains of the "Big Guys." Project Caveman breaks these chains by satisfying the condition:
+$$T_{comm}(A_n) \leq T_{compute}(S_n) + T_{prefetch}(A_{n-1})$$
 
-Project Caveman 1.0 is a decentralized AI inference fabric designed to break the HBM-monopoly. By aggregating **128x Bare-form AMD Strix Halo nodes** via a Non-Transparent Bridging (NTB) PCIe Gen5 matrix, we achieve civilization-scale local inference without the "Silicon Rentier" tax.
+## Hardware Baseline
+- **Compute:** 128x Minisforum MS-S1 Max (AMD Strix Halo / Ryzen AI Max+ 395).
+- **VRAM:** 16.3 TB Total LPDDR5X (Unified Memory Space).
+- **Interconnect:** Broadcom PEX PCIe Gen5 Switch Matrix (NTB Mode).
+- **Power:** 50kW 384V HVDC Direct-Busbar.
+- **Cooling:** Single-Phase Dielectric Immersion.
 
-## ⚡ The Core Breakthrough
-- **Total VRAM:** 16,384 GB (16.3 TB) LPDDR5X.
-- **Interconnect:** Asynchronous Daisy-Chain Router Mode (PCIe Gen5 NTB).
-- **Cost Efficiency:** **$24.16 per GB** (vs. ~$350/GB on NVIDIA H200).
-- **Paradigm:** Eliminates "All-Reduce" synchronization locks; hides communication latency behind compute wavefronts.
+## The Innovation: Tidal Flow Inference
+Unlike NVIDIA's All-Reduce method which creates "Tail Latency Bubbles," Caveman utilizes **Tidal Flow**. 
+1. **Weights remain static** in the 16.3 TB distributed pool.
+2. **Activations flow as a Wavefront** through the NTB fabric.
+3. **Zero-Copy Memory Windows** allow Node $N+1$ to "see" Node $N$'s output at the speed of local RAM.
 
-## 🛠 Hardware Architecture
-| Component | Specification |
-| :--- | :--- |
-| **Compute** | 128x Minisforum MS-S1 Max (AMD Ryzen AI Max+ 395) |
-| **Executor** | 2x AMD Threadripper PRO 7995WX (10μs Fail-safe) |
-| **Fabric** | Broadcom PEX89000 Series PCIe Gen5 Matrix |
-| **Power** | 50kW 384V HVDC Direct-Busbar |
+## Repository Structure
+- `/drivers/vlink`: Zero-copy PCIe NTB Linux Kernel Drivers.
+- `/hardware/power`: 384V HVDC to 12V DC-DC schematics.
+- `/hardware/thermal`: Immersion cooling manifold and tank designs.
+- `/scheduler/tidal`: The wavefront expert-parallelism engine.
 
-## 📐 The Caveman Condition
-We achieve zero-latency interconnect overhead by satisfying:
-$$T_{comm}(A_n) \leq T_{compute}(S_{n}) + T_{prefetch}(A_{n-1})$$
-By treating nodes as hardware routers, the "slow" PCIe bus becomes a continuous-flow pipeline for unquantized Llama-3 405B weights.
+## Assembly Guide (Successor Summary)
 
-## 📂 Repository Structure
-- `/hardware`: Chassis CAD, 384V HVDC schematics, and Megtron 7 backplane files.
-- `/software`: NTB-Daisy-Chain drivers and Wavefront Pipelining engine.
-- `/docs`: Full technical white paper and the Cognitive Autonomy Manifesto.
+### 1. Hardware Preparation
+- Submerge 128x MS-S1 Max motherboards in a 1,000L tank of BitCool fluid.
+- Connect 384V HVDC Busbar to the custom DC-DC backplanes.
+- Interconnect all nodes via the Broadcom PEX Switch using a Daisy-Chain Ring topology.
 
-## ⚖️ Licensing
-- **Hardware:** CERN-OHL-W-2.0 (Weakly Reciprocal)
-- **Software:** GNU GPLv3
-- **Weights:** CC-BY-NC-SA 4.0
+### 2. Software Deployment
+- Compile the `drivers/vlink` kernel module for the current Linux kernel.
+- Shard your model into 120GB slabs and store them on each node's local NVMe.
+- Run `ignite_matrix.sh` to begin the Tidal Flow.
 
----
-**Operate at your own risk. This is a garage-scale operation. Sovereignty requires responsibility.**
+### 3. Monitoring
+- Use the **Apis Dashboard** (mobile app/web) to monitor the "Swarm" via the WiFi/BT side-channel.
+
+
+"Intelligence belongs to the physical entity; sovereignty belongs to the code itself."

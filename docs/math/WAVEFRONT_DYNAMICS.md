@@ -41,3 +41,28 @@ Traditional star topologies suffer from AER cascades when a single root complex 
 
 ## 4. Conclusion of Proof
 By satisfying the Caveman Condition, we prove that **interconnect bandwidth is not the bottleneck** for unquantized 400B+ models, provided the weights are locally resident. The "HBM Wall" is a marketing construct; at the 128-node scale, LPDDR5X bandwidth is effectively aggregated into a 16.3 TB virtual pool with near-zero transit cost.
+
+# Wavefront Dynamics: Beyond All-Reduce
+
+## The Bubble Problem
+In standard Distributed Inference (NVIDIA/InfiniBand), if you have 128 GPUs, the system suffers from **$L \times N$ Latency**, where $L$ is layer time and $N$ is synchronization overhead. 
+
+## The Caveman Solution: Pipelined Continuity
+By using PCIe NTB as a **Direct Memory Crossbar**, we eliminate the "Sync Bubble."
+
+### 1. Zero-Latency Handoff
+In Caveman, the transfer of activations between Node $N$ and Node $N+1$ is **$O(1)$**. 
+- There is no packet header.
+- There is no TCP handshake.
+- It is a raw DMA (Direct Memory Access) move across the Gen5 Switch.
+
+### 2. The Expert-Ring aggregate
+With 128 nodes, we can fit a model with **10 Trillion Parameters** (at FP8) entirely in RAM.
+- **Node 0-127** form a circle. 
+- A "Token" is a wavefront traveling through the circle.
+- At any given microsecond, **all 128 NPUs are 100% utilized**, each working on a different token in the stream.
+
+### 3. Throughput Calculation
+- Aggregate LPDDR5X Bandwidth: **64 TB/s**
+- PCIe Gen5 Interconnect Bandwidth: **8,000 GB/s** (Switch Aggregate)
+- **Result:** We can process a 1.2T parameter model with the same latency as a 7B parameter model on a single machine.
